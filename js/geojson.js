@@ -11,8 +11,9 @@ function createMap(){
     //add OSM base tilelayer
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox.streets',
+        maxZoom: 18, // setting min amd max level of zoom
+        minZoom: 2,
+        id: 'mapbox.dark',
         accessToken: 'pk.eyJ1IjoibmlzaGlkaWxpcHNvbnRha2tlIiwiYSI6ImNqY3FucHJ4azAzNXgzM3MwbGRvM3M2YWsifQ.Mwh9X4xZhkSBBCTfBlZHEQ'
     }).addTo(map);
     //call getData function
@@ -56,4 +57,4 @@ function getData(map){
     });
 };
 
-$(document).ready(createMap);
+$(document).ready(createMap); // calling create map function on document ready
