@@ -81,7 +81,7 @@
     "type": "Feature",
     "geometry": {
        "type": "Point",
-       "coordinates":  [ -100.445882,39.78373 ]
+       "coordinates":  [ -118.313624,34.046478 ]
     },
     "properties": {
     "State":"Los Angeles",
@@ -119,10 +119,10 @@
     "type": "Feature",
     "geometry": {
        "type": "Point",
-       "coordinates":  [ -100.445882,39.78373 ]
+       "coordinates":  [-84.556461 , 43.027825]
     },
     "properties": {
-    "State":"Michiga",
+    "State":"Michigan",
     "Utility":"Electric Utility",
     "Energy Source":"Coal",
     "1990 Co2":"62,529,519",
