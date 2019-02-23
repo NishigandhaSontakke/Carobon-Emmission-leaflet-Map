@@ -22,9 +22,9 @@ html, body, #container {
     border: none;
   }
   .leaflet-popup-content {
-    margin: 13px 19px;
-    line-height: 1.4;
-    height: 250px;
+    margin: 5px 15px;
+    line-height: 0.75;
+    height: 140px;
     overflow: auto;
 }
 
