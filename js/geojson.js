@@ -105,4 +105,16 @@ function getData(map){
     });
 };
 
+$('#panel').append('<input class="range-slider" style="margin: 10px 10px 10px 10px;width: 93%;" type="range">');
+$('#panel').append('<button class="skip btn-sm btn btn-outline-danger" id="reverse">Reverse</button>');
+$('#panel').append('<button class="skip btn-sm btn btn-outline-warning" id="forward">Skip</button>');
+
+    //set slider attributes
+    $('.range-slider').attr({
+        max: 6,
+        min: 0,
+        value: 0,
+        step: 1
+    });
+
 $(document).ready(createMap); // calling create map function on document ready
