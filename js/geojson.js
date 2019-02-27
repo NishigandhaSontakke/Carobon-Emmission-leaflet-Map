@@ -1,4 +1,4 @@
-/* Map of GeoJSON data from MegaCities.geojson */
+/* Map of GeoJSON data from emission.geojson */
 
 //function to instantiate the Leaflet map
 function createMap(){
@@ -7,7 +7,7 @@ function createMap(){
         center: [20, 0]
     }).setView([39.111151,-102.388723], 5);
 
-    //add OSM base tilelayer
+    //add Mapbox base tilelayer
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18, // setting min amd max level of zoom
@@ -32,7 +32,7 @@ function onEachFeature(feature, layer) {
 };
 //calculate the radius of each proportional symbol
 function calcPropRadius(attValue) {
-    //scale factor to adjust symbol size evenly
+    //scale factor to for symbol size evenly
     var scaleFactor = 0.00002;
     //area based on attribute value and scale factor
     var area = attValue * scaleFactor;
@@ -46,7 +46,7 @@ function createPropSymbols(data, map){
 
     var attribute = "1990 Co2";
 
-    //create marker options
+    //create marker geojsonMarkerOptions
     var geojsonMarkerOptions = {
         radius: 8,
         fillColor: "#ff7800",
@@ -59,10 +59,10 @@ function createPropSymbols(data, map){
     //create a Leaflet GeoJSON layer and add it to the map
     L.geoJson(data, {
         pointToLayer: function (feature, latlng) {
-             //Step 5: For each feature, determine its value for the selected attribute
+             //For each feature, determine its value for the selected attribute
              var attValue = Number(feature.properties[attribute]);
 
-             //Step 6: Give each feature's circle marker a radius based on its attribute value
+             //Give each feature's circle marker a radius based on its attribute value
              geojsonMarkerOptions.radius = calcPropRadius(attValue);
  
             //create circle marker layer
