@@ -9,6 +9,7 @@
     },
     "properties": {
     "State":"Arizona",
+    "Name":"Arizona",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"31017960",
@@ -28,6 +29,7 @@
     },
     "properties": {
     "State":"Florida",
+    "Name":"Florida",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"55588010",
@@ -47,6 +49,7 @@
     },
     "properties": {
     "State":"Illinois",
+    "Name":"Illinois",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"55637070",
@@ -66,6 +69,7 @@
     },
     "properties": {
     "State":"Kansas",
+    "Name":"Kansas",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"25770223",
@@ -85,6 +89,7 @@
     },
     "properties": {
     "State":"Los Angeles",
+    "Name":"Los Angeles",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"18737548",
@@ -104,6 +109,7 @@
     },
     "properties": {
     "State":"Massachusetts",
+    "Name":"Massachusetts",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"10233265",
@@ -123,6 +129,7 @@
     },
     "properties": {
     "State":"Michigan",
+    "Name":"Michigan",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"62529519",
@@ -142,6 +149,7 @@
     },
     "properties": {
     "State":"Nebraska",
+    "Name":"Nebraska",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"13355408",
@@ -161,6 +169,7 @@
     },
     "properties": {
     "State":"New Jersey",
+    "Name":"New Jersey",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"6854331",
@@ -176,10 +185,11 @@
     "type": "Feature",
     "geometry": {
        "type": "Point",
-       "coordinates":  [ -75.844995,43.156168 ]
+       "coordinates":  [  -73.994048,40.726489 ]
     },
     "properties": {
     "State":"New York",
+    "Name":"New York",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"23955831",
@@ -199,6 +209,7 @@
     },
     "properties": {
     "State":"Tennessee",
+    "Name":"Tennessee",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"46471163",
@@ -218,6 +229,7 @@
     },
     "properties": {
     "State":"Texas",
+    "Name":"Texas",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"123679906",
@@ -237,6 +249,7 @@
     },
     "properties": {
     "State":"Utah",
+    "Name":"Utah",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"29092010",
@@ -256,6 +269,7 @@
     },
     "properties": {
     "State":"Virginia",
+    "Name":"Virginia",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"19503892",
@@ -275,6 +289,7 @@
     },
     "properties": {
     "State":"Wisconsin",
+    "Name":"Wisconsin",
     "Utility":"Electric Utility",
     "Energy":"Coal",
     "1990 Co2":"33746786",
