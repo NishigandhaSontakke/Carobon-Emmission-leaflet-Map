@@ -131,6 +131,7 @@ function getData(map){
             createPropSymbols(response, map, attributes);
             createSequenceControls(map, attributes);
             SearchLayer(response, map,searchLayer);
+            createLegend(map, attributes);
         }
     });
 };
@@ -177,6 +178,7 @@ $('#panel').append('<button class="skip btn-sm btn btn-outline-warning" id="forw
         //sequence
         var index = $(this).val();
         updatePropSymbols(map, attributes[index]);
+        updateLegend(map, attributes[index]);
     });
     $('.skip').click(function(){
          //get the old index value
@@ -195,6 +197,7 @@ $('#panel').append('<button class="skip btn-sm btn btn-outline-warning" id="forw
         // update slider
         $('.range-slider').val(index);
         updatePropSymbols(map, attributes[index]);
+        updateLegend(map, attributes[index]);
        
     });
 
@@ -221,6 +224,101 @@ function updatePropSymbols(map, attribute){
     });
 };
 
+function createLegend(map, attributes){
+    var LegendControl = L.Control.extend({
+        options: {
+            position: 'bottomright'
+        },
 
+        onAdd: function (map) {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
 
+            //add temporal legend div to container
+            $(container).append('<div id="temporal-legend">')
+
+            //Step 1: start attribute legend svg string
+            var svg = '<svg id="attribute-legend" width="180px" height="180px">';
+
+            //array of circle names to base loop on
+            var circles = ["max", "mean", "min"];
+
+            //Step 2: loop to add each circle and text to svg string
+            for (var i=0; i<circles.length; i++){
+                //circle string
+                svg += '<circle class="legend-circle" id="' + circles[i] + 
+                '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="90"/>';
+            };
+
+            //close svg string
+            svg += "</svg>";
+
+            //add attribute legend svg to container
+            $(container).append(svg);
+
+            //add attribute legend svg to container
+            $(container).append(svg);
+
+            return container;
+        }
+    });
+
+    map.addControl(new LegendControl());
+
+    updateLegend(map, attributes[0]);
+};
+//Calculate the max, mean, and min values for a given attribute
+function getCircleValues(map, attribute){
+    //start with min at highest possible and max at lowest possible number
+    var min = Infinity,
+        max = -Infinity;
+
+    map.eachLayer(function(layer){
+        //get the attribute value
+        if (layer.feature){
+            var attributeValue = Number(layer.feature.properties[attribute]);
+
+            //test for min
+            if (attributeValue < min){
+                min = attributeValue;
+            };
+
+            //test for max
+            if (attributeValue > max){
+                max = attributeValue;
+            };
+        };
+    });
+
+    //set mean
+    var mean = (max + min) / 2;
+
+    //return values as an object
+    return {
+        max: max,
+        mean: mean,
+        min: min
+    };
+};
+//Update the legend with new attribute
+function updateLegend(map, attribute){
+    //create content for legend
+    var year = attribute.split(" ")[0];
+    var content = "Carbon Emmision in " + year;
+
+    //replace legend content
+    $('#temporal-legend').html(content);
+    var circleValues = getCircleValues(map, attribute);
+    for (var key in circleValues){
+        //get the radius
+        var radius = calcPropRadius(circleValues[key]);
+
+        //Step 3: assign the cy and r attributes
+        $('#'+key).attr({
+            cy: 179 - radius,
+            r: radius
+        });
+        $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + " Metric ton");
+    };
+};
 $(document).ready(createMap); // calling create map function on document ready
