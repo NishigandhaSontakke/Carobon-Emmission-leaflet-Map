@@ -32,15 +32,20 @@ html, body, #container {
  border-radius: 0px; 
 }
 #temporal-legend{
-  width: 350px;
-  height: 15%;
+
   background-color: #f5f5f5;
-
+  padding: 10px;
 }
-
+.infopannel{ 
+  padding: 0.25rem;
+  border-radius: 0px;
+  font-size: 12px;
+  background-color: #fff0;
+  color: #fff;
+  border: none;}
 .sequencePanel{
     width: 350px;
-    height: 15%;
+    height: 120px;
     z-index: 999;
     position: absolute;
     bottom: 5%;
@@ -49,6 +54,7 @@ html, body, #container {
 }
 #attribute-legend{
   background-color: #f5f5f5;
+  
 }
 .range-slider {
   -webkit-appearance: none;
@@ -83,3 +89,10 @@ html, body, #container {
 }
 
 .skip{margin: 10px;}
+
+.leaflet-bottom {
+  margin-bottom: 30px;
+}
+
+.panelTitle{text-align: center;
+  font-weight: 700;}

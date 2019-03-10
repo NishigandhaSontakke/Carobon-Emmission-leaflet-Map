@@ -36,7 +36,7 @@ function onEachFeature(feature, layer) {
 //calculate the radius of each proportional symbol
 function calcPropRadius(attValue) {
     //scale factor to for symbol size evenly
-    var scaleFactor = 0.00002;
+    var scaleFactor = 0.00001;
     //area based on attribute value and scale factor
     var area = attValue * scaleFactor;
     //radius calculated based on area
@@ -163,8 +163,7 @@ function SearchLayer(response, map,searchLayer){
 
 function createSequenceControls(map,attributes){
 $('#panel').append('<input class="range-slider" style="margin: 10px 10px 10px 10px;width: 93%;" type="range">');
-$('#panel').append('<button class="skip btn-sm btn btn-outline-danger" id="reverse"><i class="fas fa-angle-double-left"> Reverse</i></button>');
-$('#panel').append('<button class="skip btn-sm btn btn-outline-warning" id="forward">Skip <i class="fas fa-angle-double-right"></i></button>');
+$('#panel').append('<div class="row" style="text-align: center;"><div class="col-6"><button class="skip btn-sm btn btn-outline-info" id="reverse"><i class="fas fa-angle-double-left"> Reverse</i></button></div> <div class="col-6"><button class="skip btn-sm btn btn-outline-info" id="forward">Skip <i class="fas fa-angle-double-right"></i></button></div></div>');
 
     //set slider attributes
     $('.range-slider').attr({
@@ -238,23 +237,25 @@ function createLegend(map, attributes){
             $(container).append('<div id="temporal-legend">')
 
             //Step 1: start attribute legend svg string
-            var svg = '<svg id="attribute-legend" width="180px" height="180px">';
+            var svg = '<svg id="attribute-legend" width="200px" height="80px">';
 
             //array of circle names to base loop on
-            var circles = ["max", "mean", "min"];
+            var circles = {
+                max: 20,
+                mean: 40,
+                min: 60
+            };
 
             //Step 2: loop to add each circle and text to svg string
-            for (var i=0; i<circles.length; i++){
+            for (var circle in circles){
                 //circle string
-                svg += '<circle class="legend-circle" id="' + circles[i] + 
-                '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="90"/>';
+                svg += '<circle class="legend-circle" id="' + circle + '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="30"/>';
+                 //text string
+                 svg += '<text id="' + circle + '-text" x="65" y="' + circles[circle] + '"></text>';
             };
 
             //close svg string
             svg += "</svg>";
-
-            //add attribute legend svg to container
-            $(container).append(svg);
 
             //add attribute legend svg to container
             $(container).append(svg);
@@ -304,7 +305,7 @@ function getCircleValues(map, attribute){
 function updateLegend(map, attribute){
     //create content for legend
     var year = attribute.split(" ")[0];
-    var content = "Carbon Emmision in " + year;
+    var content = "<b>Carbon Emmision in " + year +"</b>";
 
     //replace legend content
     $('#temporal-legend').html(content);
@@ -315,10 +316,10 @@ function updateLegend(map, attribute){
 
         //Step 3: assign the cy and r attributes
         $('#'+key).attr({
-            cy: 179 - radius,
+            cy: 59 - radius,
             r: radius
         });
-        $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + " Metric ton");
+        $('#'+key+'-text').text(Math.round(circleValues[key]*1.1) + " Metric ton");
     };
 };
 $(document).ready(createMap); // calling create map function on document ready
