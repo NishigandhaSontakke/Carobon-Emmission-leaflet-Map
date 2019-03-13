@@ -36,7 +36,7 @@ function onEachFeature(feature, layer) {
 //calculate the radius of each proportional symbol
 function calcPropRadius(attValue) {
     //scale factor to for symbol size evenly
-    var scaleFactor = 0.00002;
+    var scaleFactor = 0.00001;
     //area based on attribute value and scale factor
     var area = attValue * scaleFactor;
     //radius calculated based on area
@@ -131,6 +131,7 @@ function getData(map){
             createPropSymbols(response, map, attributes);
             createSequenceControls(map, attributes);
             SearchLayer(response, map,searchLayer);
+            createLegend(map, attributes);
         }
     });
 };
@@ -141,16 +142,28 @@ function SearchLayer(response, map,searchLayer){
         propertyName: 'Name',// Specify which property is searched into.
         marker: false, //setting marker to false so that they do not display on the map.
         initial: false,
+        zoom: 11, 
         textPlaceholder: 'Search...'
       });
+      searchControl.on('search:locationfound', function(e) {
+		
+		//console.log('search:locationfound', );
+		//map.removeLayer(this._markerSearch)
+		//e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
+		if(e.layer._popup)
+			e.layer.openPopup();
+	}).on('search:collapsed', function(e) {
+		featuresLayer.eachLayer(function(layer) {	//restore feature color
+			featuresLayer.resetStyle(layer);
+		});	
+	});
       map.addControl( searchControl );
 };
 
 
 function createSequenceControls(map,attributes){
 $('#panel').append('<input class="range-slider" style="margin: 10px 10px 10px 10px;width: 93%;" type="range">');
-$('#panel').append('<button class="skip btn-sm btn btn-outline-danger" id="reverse"><i class="fas fa-angle-double-left"> Reverse</i></button>');
-$('#panel').append('<button class="skip btn-sm btn btn-outline-warning" id="forward">Skip <i class="fas fa-angle-double-right"></i></button>');
+$('#panel').append('<div class="row" style="text-align: center;"><div class="col-6"><button class="skip btn-sm btn btn-outline-info" id="reverse"><i class="fas fa-angle-double-left"> Reverse</i></button></div> <div class="col-6"><button class="skip btn-sm btn btn-outline-info" id="forward">Skip <i class="fas fa-angle-double-right"></i></button></div></div>');
 
     //set slider attributes
     $('.range-slider').attr({
@@ -164,6 +177,7 @@ $('#panel').append('<button class="skip btn-sm btn btn-outline-warning" id="forw
         //sequence
         var index = $(this).val();
         updatePropSymbols(map, attributes[index]);
+        updateLegend(map, attributes[index]);
     });
     $('.skip').click(function(){
          //get the old index value
@@ -182,6 +196,7 @@ $('#panel').append('<button class="skip btn-sm btn btn-outline-warning" id="forw
         // update slider
         $('.range-slider').val(index);
         updatePropSymbols(map, attributes[index]);
+        updateLegend(map, attributes[index]);
        
     });
 
@@ -208,6 +223,103 @@ function updatePropSymbols(map, attribute){
     });
 };
 
+function createLegend(map, attributes){
+    var LegendControl = L.Control.extend({
+        options: {
+            position: 'bottomright'
+        },
 
+        onAdd: function (map) {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
 
+            //add temporal legend div to container
+            $(container).append('<div id="temporal-legend">')
+
+            //start attribute legend svg string
+            var svg = '<svg id="attribute-legend" width="200px" height="80px">';
+
+            //array of circle names to base loop on
+            var circles = {
+                max: 20,
+                mean: 40,
+                min: 60
+            };
+
+            //loop to add each circle and text to svg string
+            for (var circle in circles){
+                //circle string
+                svg += '<circle class="legend-circle" id="' + circle + '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="30"/>';
+                 //text string
+                 svg += '<text id="' + circle + '-text" x="65" y="' + circles[circle] + '"></text>';
+            };
+
+            //close svg string
+            svg += "</svg>";
+
+            //add attribute legend svg to container
+            $(container).append(svg);
+
+            return container;
+        }
+    });
+
+    map.addControl(new LegendControl());
+
+    updateLegend(map, attributes[0]);
+};
+//Calculate the max, mean, and min values for a given attribute
+function getCircleValues(map, attribute){
+    //start with min at highest possible and max at lowest possible number
+    var min = Infinity,
+        max = -Infinity;
+
+    map.eachLayer(function(layer){
+        //get the attribute value
+        if (layer.feature){
+            var attributeValue = Number(layer.feature.properties[attribute]);
+
+            //test for min
+            if (attributeValue < min){
+                min = attributeValue;
+            };
+
+            //test for max
+            if (attributeValue > max){
+                max = attributeValue;
+            };
+        };
+    });
+
+    //set mean
+    var mean = (max + min) / 2;
+
+    //return values as an object
+    return {
+        max: max,
+        mean: mean,
+        min: min
+    };
+};
+//Update the legend with new attribute
+function updateLegend(map, attribute){
+    //create content for legend
+    var year = attribute.split(" ")[0];
+    var content = "<b>Carbon Emmision in " + year +"</b>";
+
+    //replace legend content
+    $('#temporal-legend').html(content);
+    var circleValues = getCircleValues(map, attribute);
+    for (var key in circleValues){
+        //get the radius
+        var radius = calcPropRadius(circleValues[key]);
+
+        //Step 3: assign the cy and r attributes
+        $('#'+key).attr({
+            cy: 59 - radius,
+            r: radius
+        });
+        $('#'+key+'-text').text(Math.round(circleValues[key]*1.1) + " Metric ton");
+    };
+};
 $(document).ready(createMap); // calling create map function on document ready
