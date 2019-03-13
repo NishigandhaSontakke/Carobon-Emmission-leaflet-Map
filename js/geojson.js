@@ -146,17 +146,17 @@ function SearchLayer(response, map,searchLayer){
         textPlaceholder: 'Search...'
       });
       searchControl.on('search:locationfound', function(e) {
-		
-		//console.log('search:locationfound', );
-		//map.removeLayer(this._markerSearch)
-		//e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
-		if(e.layer._popup)
-			e.layer.openPopup();
-	}).on('search:collapsed', function(e) {
-		featuresLayer.eachLayer(function(layer) {	//restore feature color
-			featuresLayer.resetStyle(layer);
-		});	
-	});
+        
+        //console.log('search:locationfound', );
+        //map.removeLayer(this._markerSearch)
+        //e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
+        if(e.layer._popup)
+            e.layer.openPopup();
+    }).on('search:collapsed', function(e) {
+        featuresLayer.eachLayer(function(layer) {   //restore feature color
+            featuresLayer.resetStyle(layer);
+        }); 
+    });
       map.addControl( searchControl );
 };
 
